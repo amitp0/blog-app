@@ -18,14 +18,12 @@
       <br />
       <hr />
     </header>
-
-    {% for post in posts %}
-    <article>
-      <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-      <time>published: {{ post.published_date }}</time>
-      <p>{{ post.text|linebreaksbr }}</p>
-      <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}</a>
-    </article>
-    {% endfor %}
+    {% block content %}
+    <h2>New post</h2>
+    <form method="POST" class="post-form">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="save btn btn-secondary">Save</button>
+    </form>
+    {% endblock %}
   </body>
 </html>

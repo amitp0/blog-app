@@ -9,8 +9,8 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
     <header>
@@ -18,13 +18,30 @@
     </header>
 
     <article class="post">
-        {% if post.published_date %}
-            <time class="date">
-                {{ post.published_date }}
-            </time>
-        {% endif %}
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.text|linebreaksbr }}</p>
+      {% if post.published_date %}
+      <time class="date"> {{ post.published_date }} </time>
+      {% endif %}
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.text|linebreaksbr }}</p>
     </article>
+
+    <hr />
+    <a href="{% url 'add_comment_to_post' pk=post.pk %}"></div>
+
+    Add comment</a>
+    {%if post.comments.count %}
+    {% for comment in post.comments.all %}
+      <div class="date">{{ comment.created_date }}</div>
+      
+      <strong>{{ post.comment.count }}</strong>
+      <strong>{{ comment.author }}</strong>
+      <p>{{ comment.text|linebreaks }}</p>
+    </div>
+    {%endfor%}
+    {%else%}
+    <div data-gb-custom-block data-tag="empty">
+      <p>No comments here yet :(</p>
+    </div>
+  {%endif%}
   </body>
 </html>
