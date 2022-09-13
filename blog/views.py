@@ -4,13 +4,16 @@ from .models import Post,Comment
 from .forms import PostForm,CommentForm
 from django.shortcuts import redirect
 # Create your views here.
+# def author_list(request):
+#     authors=Authors.objects.all()
+#     return render(request,'blog/author_list.html',{'authors':authors})
 def post_list(request):
-    posts = Post.objects.all()
+    posts = Post.objects.order_by('-created_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    posts = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/post_detail.html', {'posts': posts})
 
 def post_new(request):
     if request.method == "POST":

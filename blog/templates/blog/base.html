@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Amit's blog</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    </head>
+    <body>
+        <header>
+            <div class="container max-w-full drop-shadow fixed p-4 bg-white">
+                <h1 class="text-3xl font-[Sora] text-blue-900 font-bold px-6">
+                    <a href="/">Amit's Blog</a>
+                </h1>
+            </div>
+        </header>
+
+        <main class="container py-24 px-72">
+            <div class="row">
+                <div class="col">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </main>
+</html>
