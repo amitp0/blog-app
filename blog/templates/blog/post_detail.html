@@ -2,6 +2,9 @@
 {% block content %}    
 <article>
       <h2 class="text-4xl leading-10">{{ posts.title }}</h2>
+      {%for tag in posts.tags.all%}
+      <button class="rounded-md bg-slate-100 p-2 mb-8 mt-2">{{tag.name}}</button>
+      {%endfor%}
       <br>
       {% if posts.published_date %}
       <div class="text-gray-600">
