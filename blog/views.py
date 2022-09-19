@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from .models import Post,Comment
+from .models import Post,Comment,Author
 from .forms import PostForm,CommentForm
 from django.shortcuts import redirect
 # Create your views here.
-# def author_list(request):
-#     authors=Authors.objects.all()
-#     return render(request,'blog/author_list.html',{'authors':authors})
+def author_list(request):
+    authors=Author.objects.all()
+    return render(request,'blog/author_list.html',{'authors':authors})
 
 def post_list(request):
     posts = Post.objects.order_by('-created_date')
@@ -18,10 +18,11 @@ def post_detail(request, pk):
 
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST,request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            ath = Author.objects.get(user=request.user)
+            post.author = ath
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
