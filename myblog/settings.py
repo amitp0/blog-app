@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'taggit',
+    'rest_framework',
 ]
 
 TAGGIT_CASE_INSENSITIVE = True

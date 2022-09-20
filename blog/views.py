@@ -25,6 +25,7 @@ def post_new(request):
             post.author = ath
             post.published_date = timezone.now()
             post.save()
+            form.save()
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
@@ -43,3 +44,38 @@ def add_comment_to_post(request, pk):
     else:
         form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form': form})
+
+
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Post
+from .serializers import PostSerializer
+
+class PostListApiView(APIView):
+
+    def get(self, request):
+        Posts = Author.objects.filter(user = request.user.id)
+        serializer = PostSerializer(Posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = {
+            'user': request.user.id,
+            'first_name': request.data.get('first_name'), 
+            'last_name': request.data.get('last_name'),
+            'email':request.data.get('email'),
+            'registered_at':request.data.get('registered_at'),
+            'last_login':request.data.get('last_login'),
+            'profile':request.data.get('profile'),
+            'profile_photo':request.data.get('profile_photo')
+            
+        }
+        serializer = PostSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
