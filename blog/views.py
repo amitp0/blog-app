@@ -10,7 +10,7 @@ def author_list(request):
 
 def post_list(request):
     posts = Post.objects.order_by('-created_date')
-    return render(request, 'blog/post_list.html', {'posts':posts,'author':authors})
+    return render(request, 'blog/post_list.html', {'posts':posts})
 
 def post_detail(request, pk):
     posts = get_object_or_404(Post, pk=pk)
@@ -52,13 +52,38 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer,AuthorSerializer
 
 class PostListApiView(APIView):
 
     def get(self, request):
-        Posts = Author.objects.filter(user = request.user.id)
+        Posts = Post.objects.all()
         serializer = PostSerializer(Posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = {
+            'title': request.data.get('title'), 
+            'text': request.data.get('text'),
+            'created_date':request.data.get('created_date'),
+            'published_date':request.data.get('published_date'),
+            'image':request.data.get('image'),
+            'tags':request.data.get('tags'),
+            
+        }
+        serializer = PostSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AuthorListApiView(APIView):
+
+    def get(self, request):
+        Authors = Author.objects.all()
+        serializer = AuthorSerializer(Authors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -73,7 +98,7 @@ class PostListApiView(APIView):
             'profile_photo':request.data.get('profile_photo')
             
         }
-        serializer = PostSerializer(data=data)
+        serializer = AuthorSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
