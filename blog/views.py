@@ -10,7 +10,7 @@ def author_list(request):
 
 def post_list(request):
     posts = Post.objects.order_by('-created_date')
-    return render(request, 'blog/post_list.html', {'posts':posts})
+    return render(request, 'blog/post_list.html', {'posts':posts,'author':authors})
 
 def post_detail(request, pk):
     posts = get_object_or_404(Post, pk=pk)
@@ -18,7 +18,7 @@ def post_detail(request, pk):
 
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST,request.FILES)
+        form = PostForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
             ath = Author.objects.get(user=request.user)
