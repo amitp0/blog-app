@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
-    'taggit',
     'rest_framework',
+    'taggit',
+    'blog',
+    'account',
+    'post',
+    'comment',
 ]
 
 TAGGIT_CASE_INSENSITIVE = True
@@ -134,6 +137,7 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL='/'
 
+AUTH_USER_MODEL='account.User'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
