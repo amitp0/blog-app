@@ -12,4 +12,4 @@ class Comment(models.Model):
         ordering=['published_at']
 
     def __str__(self):
-        return self.post
+        return str(self.id)

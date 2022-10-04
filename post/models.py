@@ -1,5 +1,6 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 from django.conf import settings
 # Create your models here.
@@ -9,7 +10,7 @@ class Post(models.Model):
     subtitle=models.CharField(blank=True,max_length=20)
     body=models.TextField()
     cover_img=models.ImageField(upload_to='static/images/%Y/%m/%d/',blank=True)
-    created_date=models.DateTimeField()
+    created_date=models.DateTimeField(default=timezone.now)
     published_date=models.DateTimeField()
     slug=models.SlugField()
 
@@ -22,4 +23,4 @@ class Post(models.Model):
         super(Post,self).save(*args,**kwargs)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
