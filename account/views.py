@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializers import AccountSerializer
 from django.http import Http404
 from .models import User
+from rest_framework.renderers import TemplateHTMLRenderer
 # Create your views here.
 
 class AccountList(APIView):
@@ -20,6 +21,8 @@ class AccountList(APIView):
         
         
 class AccountDetail(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'account/profile_detail.html'
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
@@ -29,7 +32,7 @@ class AccountDetail(APIView):
     def get(self,request, pk):
         user = self.get_object(pk)
         serializer = AccountSerializer(user)
-        return Response(serializer.data)
+        return Response({'serializer': serializer, 'profile': user})
   
     def put(self, request, pk):
         user = self.get_object(pk)
