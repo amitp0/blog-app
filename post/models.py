@@ -1,9 +1,11 @@
-from unittest.util import _MAX_LENGTH
+from random import randint
+
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-from random import randint
-from django.conf import settings
+
+
 # Create your models here.
 class Post(models.Model):
     author=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
