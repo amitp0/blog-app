@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %} 
+{% load rest_framework %}
+{% block content %}    
+<article>
+      <h2 class="text-4xl leading-10">{{ posts.title }}</h2>
+      {%for tag in posts.tags.all%}
+      <button class="rounded-md bg-slate-100 p-2 mb-8 mt-2">{{tag.name}}</button>
+      {%endfor%}
+      <br>
+      {% if posts.published_date %}
+      <div class="text-gray-600">
+        <i class="ri-calendar-line"></i>
+        <time>{{ posts.published_date }}</time>
+      </div>
+      <h2 class="font-thin">By : {{posts.author}}</h2>
+      <br>
+      <hr/>
+      {% endif %}
+      {%if posts.cover_img%}
+      <img src="{{ posts.cover_img }}" class="h-96 w-full object-cover rounded">
+      {%endif%}
+      <br>
+      <p class="leading-loose">{{ posts.body|linebreaksbr }}</p>
+    </article>
+
+    <hr /><br>
+
+    <div class="p-4">
+      <a href="{% url 'add-comment' %}"><button class="place-content-center bg-blue-900 p-2 rounded text-white  text-sm">Add comment</button></a>
+</div>
+    {%if posts.comments.count %}
+    {% for comment in posts.comment.all %}
+    <div class="p-2 bg-gray-100 rounded"><strong>{{ comment.author }}</strong>
+      <div class="date">{{ comment.created_date }}</div>      
+      <p>{{ comment.text|linebreaks }}</p></div>
+      <br>
+    
+
+    {%endfor%}
+    {%else%}
+    <div data-gb-custom-block data-tag="empty">
+      <p>No comments here yet :(</p>
+    </div>
+  {%endif%}
+  {% endblock %}
