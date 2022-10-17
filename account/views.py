@@ -2,7 +2,6 @@ from django.http import Http404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -29,8 +28,8 @@ class AccountList(APIView):
 
 
 class AccountDetail(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'account/profile_detail.html'
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self, primary_key):
         try:
@@ -51,8 +50,8 @@ class AccountDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, primary_key):
-        user = self.get_object(primary_key)
+    def patch(self, request, pk):
+        user = self.get_object(pk)
         serializer = AccountSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()

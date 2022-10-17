@@ -1,5 +1,7 @@
 from django.http import Http404
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,6 +12,9 @@ from .serializers import CommentSerializer
 # Create your views here.
 
 class CommentList(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
@@ -23,6 +28,9 @@ class CommentList(APIView):
 
 
 class CommentDetail(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Comment.objects.get(pk=pk)
